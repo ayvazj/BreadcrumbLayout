@@ -1,0 +1,60 @@
+apply plugin: 'com.jfrog.bintray'
+
+def bintrayRepo = 'maven'
+def bintrayName = POM_NAME
+def bintrayDesc = POM_DESCRIPTION
+def libraryDescription = POM_DESCRIPTION
+
+def projectSiteUrl = POM_URL
+def projectGitUrl = POM_SCM_URL
+def projectIssueUrl = POM_ISSUE_URL
+def projectLabels = POM_TAGS.tokenize(',')
+
+def versionName = POM_VERSION_NAME
+def versionDesc = POM_VERSION_DESC
+
+def bintrayUser = bintrayUsername
+def bintrayApikey = bintrayKey
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    failOnError = false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+bintray {
+    user = bintrayUser
+    key = bintrayApikey
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        desc = libraryDescription
+        websiteUrl = projectSiteUrl
+        vcsUrl = projectGitUrl
+        issueTrackerUrl = projectIssueUrl
+        licenses = ["Apache-2.0"]
+        labels = projectLabels
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            name = versionName
+            desc = versionDesc
+        }
+    }
+}
+

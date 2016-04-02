@@ -1,0 +1,51 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+def projectName = POM_NAME
+def projectDesc = POM_DESCRIPTION
+def projectGroupId = POM_GROUP
+def projectArtifactId = POM_ARTIFACT
+def projectVersionName = POM_VERSION_NAME
+def projectVersionDesc = POM_VERSION_DESC
+def projectPackaging = 'aar'
+def projectSiteUrl = POM_URL
+def projectGitUrl = POM_SCM_URL
+def projectIssueUrl = POM_ISSUE_URL
+def projectLabels = POM_TAGS.tokenize(',')
+
+def developerId = POM_DEVELOPER_ID
+def developerName = POM_DEVELOPER_NAME
+def developerEmail = POM_DEVELOPER_EMAIL
+
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                name projectName
+                groupId projectGroupId
+                artifactId projectArtifactId
+                version projectVersionName
+                packaging projectPackaging
+                url projectSiteUrl
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id developerId
+                        name developerName
+                        email developerEmail
+                    }
+                }
+                scm {
+                    connection projectGitUrl
+                    developerConnection projectGitUrl
+                    url projectSiteUrl
+                }
+            }
+        }
+    }
+}
